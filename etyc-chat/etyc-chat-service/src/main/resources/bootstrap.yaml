@@ -1,0 +1,48 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  profiles:
+    active: dev
+  application:
+    name: etyc-chat
+  cloud:
+    nacos:
+      server-addr: 192.168.150.101
+      discovery:
+        namespace: etyc
+      config:
+        namespace: etyc
+        shared-configs:
+          - data-id: mysql.yaml
+          - data-id: mp.yaml
+          - data-id: redis.yaml
+          - data-id: swagger.yaml
+  rabbitmq:
+    addresses: 192.168.150.101
+    listener:
+      simple:
+        prefetch: 1
+    username: etsuya
+    password: ety2004
+server:
+  port: 8082
+etyc:
+  swagger:
+    base-package: com.etyc.chat
+    author: Etsuya233
+    email: etsuya233@outlook.com
+    description: 你妈死了
+    title: 聊天微服务 etyc-chat
+    license: Apache 2.0
+  jwt:
+    private-key-path: security/private_key.pem
+    public-key-path: security/public_key.pem
+  snowflake:
+    datacenter-id: 1
+    worker-id: 1
+  xxljob:
+    admin-addresses: http://192.168.150.101:18081/xxl-job-admin
+    appname: etyc-chat
+    access-token: "default_token"

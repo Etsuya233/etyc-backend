@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: etyc-gateway
+  cloud:
+    nacos:
+      server-addr: 192.168.150.101:8848
+      discovery:
+        ip: 192.168.150.1
+        namespace: etyc
+      config:
+        namespace: etyc
+    gateway:
+      routes:
+        - id: etyc-user
+          uri: lb://etyc-user
+          predicates:
+            - Path=/user/**
+          filters:
+            - StripPrefix=1
+            - AddRequestHeader=X-Request-From, etyc-gateway
+        - id: etyc-chat
+          uri: lb://etyc-chat
+          predicates:
+            - Path=/chat/**
+          filters:
+            - StripPrefix=1
+            - AddRequestHeader=X-Request-From, etyc-gateway
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origin-patterns:
+              - "*"
+            allowed-methods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowed-headers:
+              - "*"
+            allow-credentials: true
+            max-age: 3600
+server:
+  port: 8080
+etyc:
+  jwt:
+    private-key-path: security/private_key.pem
+    public-key-path: security/public_key.pem
+  auth:
+    no-auth-patterns:
+      - /user/user/login
+      - /user/user/register
+      - /chat/etyc/**
+      - /user/user/info
+  snowflake:
+    datacenter-id: 1
+    worker-id: 1

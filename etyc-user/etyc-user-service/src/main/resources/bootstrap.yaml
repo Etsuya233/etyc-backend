@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: etyc-user
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      server-addr: 192.168.150.101:8848
+      discovery:
+        ip: 192.168.150.1
+        namespace: etyc
+      config:
+        namespace: etyc
+        shared-configs:
+          - data-id: mysql.yaml
+          - data-id: mp.yaml
+          - data-id: redis.yaml
+          - data-id: swagger.yaml
+server:
+  port: 8081
+etyc:
+  jwt:
+    private-key-path: security/private_key.pem
+    public-key-path: security/public_key.pem
+  swagger:
+    base-package: com.etyc.user
+    author: Etsuya233
+    email: etsuya233@outlook.com
+    description: 你妈死了
+    title: 用户微服务 etyc-user
+    license: Apache 2.0
+  snowflake:
+    datacenter-id: 1
+    worker-id: 1
+logging:
+  level:
+    sql: debug
